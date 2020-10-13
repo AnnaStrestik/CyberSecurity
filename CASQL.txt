@@ -1,0 +1,47 @@
+---checking for duplicate rows
+select *  from CA;----5374
+select distinct * from CA; ----5373
+
+----checking for missing target - 27
+select * 
+from CA
+where "Target" = '';
+
+----checking for missing date - 0
+select *
+from CA
+where "Date" = '';
+
+----checking for missing attack class - 26
+select *
+from CA
+where "Attack_Class" = '';
+
+----checking for missing target class - 26
+select *
+from CA
+where "Target_Class" = '';
+
+----checking for missing target class = Individual - 1089
+select *
+from CA
+where "Target_Class" ilike '%Individual%';
+
+----checking countries - 172
+select distinct "Country"
+from CA;
+
+---checking attack_class - 13
+select distinct "Attack_Class"
+from CA;
+
+
+select distinct "Date"
+from CA;
+
+                
+select to_date("Date", 'mm/dd/yyyy')
+from CA
+where "Date" not like('16/03/2020')
+order by "Date"DESC; 
+-------'1/13/2017'---tohle datum je error a chybi tam, protoze je ve spanem poradi
