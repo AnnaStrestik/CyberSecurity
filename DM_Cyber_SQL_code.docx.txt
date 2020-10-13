@@ -1,0 +1,175 @@
+﻿https://dbdiagram.io/d/5f83350b3a78976d7b772fea 
+// výsledná tabulka - přehled o útocích
+Table ATTACK_MAIN {
+  ID int [pk]
+  DATE date
+  TARGETID int
+  CATEGORY_GROUPID int
+  SUBCATEGORYID int
+  TARGET_SECTORID str
+  COUNTRY_GROUPID str
+  ATTACK_CLASSID str // potreba sjednotit hodnoty a zkratky
+  KEYWORDS_GROUPID int
+}
+ 
+ // OK - nemenit
+ // cil utoku napr. nazev firmy
+ Table TARGET {
+   ID int [pk]
+   NAME varchar
+ }
+ 
+ // OK - nemenit (SQL )
+ // puvodne target class (x individual, ...)
+ Table TARGET_SECTOR {
+   ID str [pk] // pismena nyni
+   NAME varchar
+ }
+ 
+ // OK
+ // kombinace kategorii - bridge
+ Table CATEGORY_GROUP {
+   ID int [pk]
+   ATTACK_CATEGORYID int
+   ATTACK_MAINID int
+ }
+ 
+ // OK - vlastni tvorba
+ // social / technical / unknown
+ Table ATTACK_CATEGORY {
+  ID int [pk] // zatim cisla
+  NAME varchar
+ }
+
+
+// OK - nemenit
+// puvodne atribut attack (malware, hijack...)
+Table ATTACK_SUBCATEGORY {
+  ID int [pk]
+  NAME str
+  CATEGORYID int
+}
+
+
+// VYCICSTIT (N/A, GB-UK, UAE-SA)
+// zeme
+Table COUNTRY {
+  ID str [pk] // ISO 3166-1 alpha-2 
+  NAME str
+}
+
+
+// OK
+// skupiny zemi
+Table COUNTRY_GROUP {
+  ID str [pk]
+  COUNTRYID str
+  ATTACK_MAINID int
+}
+
+
+// SJEDNOTIT zkratky a nazvy, doplnit desc v ČJ
+// stejny atribut puvodne
+Table ATTACK_CLASS {
+  ID str [pk] // zkratka CC
+  NAME str // nazev Cyber Crime
+  DESCRIPTION str // v ČJ
+} 
+
+
+// OK
+// skupina klicovych slov (z description)
+Table  KEYWORDS_GROUP {
+  ID int [pk]
+  ATTACK_MAINID int
+  KEYWORDID int
+}
+
+
+// UKOL - VYPIS HODNOT A JEJICH CETNOST - Python / Geneea?
+// klicova slova (z description)
+Table KEYWORDS {
+  ID int [pk]
+  NAME str
+  DESCRIPTION str
+}
+
+
+// PLAN 1
+Table PREVENTION_GROUP {
+  ID int [pk]
+  ATTACK_MAINID int
+  PREVENTIONID int
+}
+
+
+// PLAN 1
+Table PREVENTION {
+  ID int [pk]
+  NAME str
+  DESCRIPTION str
+}
+
+
+// PLAN 2
+Table ACTION_GROUP {
+  ID int [pk]
+  ATTACK_MAINID int
+  ACTIONID int
+}
+
+
+// PLAN 2
+Table ACTION {
+  ID int [pk]
+  NAME str
+  DESCRIPTION str
+}
+
+
+
+
+// PLAN 3
+// propojeni data breaches
+
+
+Ref: "CATEGORY_GROUP"."ATTACK_MAINID" < "ATTACK_MAIN"."ID"
+
+
+Ref: "TARGET"."ID" < "ATTACK_MAIN"."TARGETID"
+
+
+Ref: "ATTACK_CATEGORY"."ID" < "ATTACK_SUBCATEGORY"."CATEGORYID"
+
+
+Ref: "TARGET_SECTOR"."ID" < "ATTACK_MAIN"."TARGET_SECTORID"
+
+
+Ref: "ATTACK_SUBCATEGORY"."ID" < "ATTACK_MAIN"."SUBCATEGORYID"
+
+
+Ref: "ATTACK_CATEGORY"."ID" < "CATEGORY_GROUP"."ATTACK_CATEGORYID"
+
+
+Ref: "COUNTRY"."ID" < "COUNTRY_GROUP"."COUNTRYID"
+
+
+Ref: "ATTACK_MAIN"."ID" < "COUNTRY_GROUP"."ATTACK_MAINID"
+
+
+Ref: "COUNTRY_GROUP"."ID" < "ATTACK_MAIN"."COUNTRY_GROUPID"
+
+
+Ref: "ATTACK_CLASS"."ID" < "ATTACK_MAIN"."ATTACK_CLASSID"
+
+
+Ref: "KEYWORDS_GROUP"."ATTACK_MAINID" < "ATTACK_MAIN"."ID"
+
+
+Ref: "KEYWORDS"."ID" < "KEYWORDS_GROUP"."KEYWORDID"
+
+
+Ref: "PREVENTION"."ID" < "PREVENTION_GROUP"."PREVENTIONID"
+
+
+Ref: "ACTION"."ID" < "ACTION_GROUP"."ACTIONID"
