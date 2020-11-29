@@ -1,0 +1,742 @@
+USE ROLE ROLE_CZECHITA_STRESTIKOVAA;
+USE WAREHOUSE COMPUTE_WH;
+USE DATABASE COURSES;
+USE SCHEMA SCH_CZECHITA_STRESTIKOVAA;
+
+//CREATE OR REPLACE TABLE CA_dirty
+//(
+//id int,
+//Date date,
+//Author varchar(250),
+//Target varchar(250),
+//Description varchar(400),
+//Attack varchar(400),
+//Target_Class varchar(400),
+//Attack_Class varchar(400),
+//Country varchar(250)
+//);
+
+//select *
+//from ca_dirty;
+//
+//create or replace temporary table c_target as
+//select distinct target
+//from ca_dirty;
+//
+//select *
+//from c_target
+//order by target asc;
+//
+//create or replace table c_target 
+//(
+//id number,
+//target varchar(100)
+//);
+//
+
+select 'ID',target
+from c_target
+where ID l ID;
+
+alter table c_target ADD ID number;
+select *
+from c_target
+order by target asc
+;
+
+alter table c_target
+ADD PRIMARY KEY (ID);
+
+select *
+from c_target;
+
+select distinct target
+from c_target
+order by target asc;
+
+//create or replace table c_target 
+//(id autoincrement start 1 increment 1,
+//target varchar(150)
+//);
+
+select *
+from c_target
+order by target asc;
+
+
+
+
+select row_number() over (order by target) as id, target
+from c_target;
+
+delete ID
+from C_target;
+
+create or replace table c_target AS
+select row_number() over (order by target) as id,target
+from c_target;
+
+create or replace table c_target 
+(
+id number,
+target varchar(150)
+);
+
+drop table if exists c_target;
+
+select *
+from c_target;
+
+select *
+from ca_dirty;
+
+CREATE OR REPLACE TABLE Attack_dirty
+(
+id int,
+Date date,
+Author varchar(250),
+Target varchar(250),
+Description varchar(400),
+Attack varchar(400),
+Target_Class varchar(400),
+Attack_Class varchar(400),
+Country varchar(250)
+);
+
+
+select distinct "Target_Class"
+from ca_dirty;
+
+
+CREATE OR REPLACE TABLE CA_bezcarek
+(
+Date date,
+Author varchar(250),
+Target varchar(250),
+Description varchar(1000),
+Attack varchar(400),
+Target_Class varchar(400),
+Attack_Class varchar(400),
+Country varchar(250)
+);
+
+select *
+from ca_bezcarek;
+
+create or replace table CA_bezcarek as
+select row_number() over (order by date) as id, *
+from ca_bezcarek;
+
+select *
+from ca_bezcarek;
+
+drop table ca_dirty;
+
+select distinct target
+from ca_bezcarek;
+
+create temporary table ctarget
+AS
+select distinct target
+from ca_bezcarek;
+
+select *
+from ctarget;
+
+create or replace table c_target AS
+select row_number() over (order by target) as id, target
+from ctarget;
+
+-----------------------------------------
+select * 
+from attack_type;
+
+
+
+
+-------------------------------------
+update ca_bezcarek set Target_class='Multiple industries' where Target_class='Y Multiple targets';
+update ca_bezcarek set Target_class='Multiple industries' where Target_class='Y Multiple Targets';
+update ca_bezcarek set Target_class='Multiple industries' where Target_class='Y Multiple Industries';
+update ca_bezcarek set Target_class='Electricity gas steam and air conditioning supply' where Target_class='D Electricity gas steam and air conditioning supply';
+update ca_bezcarek set Target_class='Public administration and defence.compulsory social security' where Target_class='O Public administration and defence-carka- compulsory social security';
+update ca_bezcarek set Target_class='Human health and social work activities' where Target_class='Q Human health and social work activities';
+update ca_bezcarek set Target_class='Information and communication' where Target_class='J Information and communication';
+update ca_bezcarek set Target_class='Education' where Target_class='P Education';
+update ca_bezcarek set Target_class='Arts entertainment and recreation' where Target_class='R Arts entertainment and recreation';
+update ca_bezcarek set Target_class='Individual' where Target_class='X Individual';
+update ca_bezcarek set Target_class='Financial and insurance activities' where Target_class='K Financial and insurance activities';
+update ca_bezcarek set Target_class='Accommodation and food service activities' where Target_class='I Accommodation and food service activities';
+update ca_bezcarek set Target_class='Professional scientific and technical activities' where Target_class='M Professional scientific and technical activities';
+update ca_bezcarek set Target_class='Wholesale and retail trade' where Target_class='G Wholesale and retail trade';
+update ca_bezcarek set Target_class='Fintech' where Target_class='V Fintech';
+update ca_bezcarek set Target_class='Transportation and storage' where Target_class='H Transportation and storage';
+update ca_bezcarek set Target_class='Other service activities' where Target_class='S Other service activities';
+update ca_bezcarek set Target_class='Mining and quarrying' where Target_class='B Mining and quarrying';
+update ca_bezcarek set Target_class='Administrative and support service activities' where Target_class='N Administrative and support service activities';
+update ca_bezcarek set Target_class='Water supply.sewerage waste management and remediation activities' where Target_class='Water supply.sewerage waste management-carka- and remediation activities';
+update ca_bezcarek set Target_class='Activities of extraterritorial organizations and bodies' where Target_class='U Activities of extraterritorial organizations and bodies';
+update ca_bezcarek set Target_class='Manufacturing' where Target_class='C Manufacturing';
+update ca_bezcarek set Target_class='Unknown' where Target_class='Z Unknown';
+update ca_bezcarek set Target_class='Real estate activities' where Target_class='L Real estate activities';
+update ca_bezcarek set Target_class='Public administration and defence.compulsory social security' where Target_class='Public administration.defence. compulsory social security';
+update ca_bezcarek set Target_class='Unknown' where Target_class is NULL;
+
+create temporary table help_target_type as
+select distinct target_class
+from ca_bezcarek;
+
+select *
+from help_target_type;
+
+create or replace table c_target_type as
+select row_number() over (order by target_class) as id, target_class as name
+from help_target_type;
+
+select * 
+from c_target_type;
+
+------------------------------------------------------------------------------------------------
+select distinct attack_class
+from ca_bezcarek;
+
+update ca_bezcarek set attack_class='CE' where attack_class='Cyber Espionage';
+update ca_bezcarek set attack_class='H' where attack_class='Hacktivism';
+update ca_bezcarek set attack_class='CW' where attack_class='Cyber Warfare';
+update ca_bezcarek set attack_class='CW' where attack_class='CW?';
+update ca_bezcarek set attack_class='Multiple' where attack_class='CC/CE';
+update ca_bezcarek set attack_class='Multiple' where attack_class='>1';
+update ca_bezcarek set attack_class='CC' where attack_class='Cyber Crime';
+update ca_bezcarek set attack_class='Unknown' where attack_class is NULL;
+
+select distinct attack_class
+from ca_bezcarek;
+
+create temporary table HELP_attack_class as
+select distinct attack_class
+from ca_bezcarek
+order by attack_class asc;
+
+create table C_Attack_class AS
+select row_number() over (order by attack_class) as id, attack_class as CODE
+from HELP_attack_class;
+
+select *
+from c_attack_class;
+--------------------------------------------------------------------------------------
+select *
+from ca_bezcarek;
+--------------------------------------------------------------------------------------
+select distinct country
+from ca_bezcarek;
+
+update ca_bezcarek set country='Global' where country='>1';
+update ca_bezcarek set country='Unknown' where country is NULL;
+--------------------------------------------------------------------------------------
+select distinct attack
+from ca_bezcarek
+order by attack asc;
+update ca_bezcarek set attack='0-day vulnerability' where attack='0-Day Vulnerability';
+update ca_bezcarek set attack='51% attack' where attack='51% Attack';
+update ca_bezcarek set attack='vulnerability' where attack='"view as"""" vulnerability"';
+update ca_bezcarek set attack='ATM Black Box' where attack='"ATM """"Black Box"""""';
+update ca_bezcarek set attack='Brute Force' where attack='Brute-Force';
+update ca_bezcarek set attack='Brute Force' where attack='Brute-force';--
+update ca_bezcarek set attack='Brute Force (Credential Stuffing)' where attack='Brute-Force/Credential Stuffing';
+update ca_bezcarek set attack='Credential Stuffing' where attack='Credential Stuffng';
+update ca_bezcarek set attack='Credential Stuffing' where attack='Credential stuffing';
+update ca_bezcarek set attack='DNS Hijacking' where attack='DNS Hijack';
+update ca_bezcarek set attack='DNS Hijacking' where attack='DNS Hjiacking';
+update ca_bezcarek set attack='DNS Hijacking' where attack='DNS hijacking';
+update ca_bezcarek set attack='DNS Hijacking' where attack='DNS hjiacking';
+update ca_bezcarek set attack='PoS Malware' where attack='Pos Malware';
+update ca_bezcarek set attack='Router Vulnerability' where attack='Router vulnerability';
+update ca_bezcarek set attack='Targeted Attack' where attack='Targeted attack';
+update ca_bezcarek set attack='Web Shell' where attack='WebShell';
+update ca_bezcarek set attack='Web Shell' where attack='Web Shells';
+update ca_bezcarek set attack='Wordpress plugin vulnerability' where attack='Wordpress plugins vulnerabilities';
+update ca_bezcarek set attack='Zoombombing' where attack='Zoom Bombing';
+update ca_bezcarek set attack='Zoombombing' where attack='Zoom bombing';
+update ca_bezcarek set attack='Zoombombing' where attack='Zoom-bombing';
+update ca_bezcarek set attack='Unknown' where attack is NULL;
+update ca_bezcarek set attack='Unknown' where attack='>1';
+
+create temporary table HELP_attack_type as
+select distinct attack
+from ca_bezcarek
+order by attack asc;
+
+create or replace table attack_type as
+select row_number() over (order by attack) as id, attack as NAME
+from HELP_attack_type;
+
+select *
+from attack_type;
+-----------------------------------------------------------------------------------------------------------------------------
+
+select distinct target
+from c_target;
+update c_target set target='.' where target like'%-carka-%';----hotovo
+update c_target set target='Multiple' where target ='>1';
+update c_target set target='Multiple' where target ='"A """"select number"""" of users"';
+update c_target set target='British Armys influence and outreach Twitter account 77th Brigade' where target like'%British Army%influence and outreach%Twitter account%@77th_Brigade%';---hotovo
+update c_target set target='Copenhage city bicycle sharing system' where target like '%Copenhagen cityâ€™s bicycle sharing system â€śBycyklen%';
+update c_target set target='GitHub users' where target ='GitHub Users';
+update c_target set target='Instagram users' where target ='Instagram Users';
+update c_target set target='MacOS users' where target ='MacOS Users';
+update c_target set target='Macys' where target like '%Macy%s%';
+update c_target set target='Office 365 users' where target ='Office 365 Users';
+update c_target set target='Python users' where target ='Python Users';
+update c_target set target='Windows and Linux machines' where target ='Windows and Linux Machines';
+update c_target set target='WordPress sites' where target ='Wordpress Sites';
+update c_target set target='WordPress sites' where target ='Wordpress sites';
+update c_target set target='YouTube users' where target ='YouTube Users';
+update c_target set target='YouTube users' where target ='YouTuber users';
+update c_target set target='YouTube users' where target ='Youtube Users';
+update c_target set target='Unknown' where target is NULL;
+
+create or replace temporary table HELP_c_target as
+select distinct name
+from c_target;
+
+select *
+from help_c_target;
+
+create or replace table c_target as
+select row_number() over (order by name) as id, name
+from help_c_target;
+
+update c_target set name ='Unknown' where name ='.';
+
+select *
+from c_target;
+--------------------------------------------------------------------------------
+update ca_bezcarek set attack_class='HA' where attack_class ='H';
+update ca_bezcarek set attack_class='MU' where attack_class ='Multiple';
+update c_Attack_class set code ='MU' where code ='Multiple';
+update ca_bezcarek set attack_class='UN' where attack_class ='Unknown';
+update c_Attack_class set code ='UN' where code ='Unknown';
+
+select *
+from c_attack_class;
+--------------------------------------------------------------------------------
+select distinct country
+from ca_bezcarek;
+
+update ca_bezcarek set country='GB' where country ='UK';
+update ca_bezcarek set country='AE' where country ='UAE';
+update ca_bezcarek set country='XX' where country ='Unknown';
+update ca_bezcarek set country='GX' where country ='Global';
+update ca_bezcarek set country='GX' where country ='EU';
+update ca_bezcarek set country='US GB' where country ='US UK';
+update ca_bezcarek set country='AU GB US CA HK CH' where country ='AU UK US CA HK CH';
+update ca_bezcarek set country='FR GB' where country ='FR UK';
+update ca_bezcarek set country='GB IT CA' where country ='UK IT CA';
+update ca_bezcarek set country='GB IE' where country ='UK IE';
+update ca_bezcarek set country='IL GB' where country ='IL UK';
+update ca_bezcarek set country = 'US AE' where country = 'US UAE';
+update ca_bezcarek set country = 'AE LB' where country = 'UAE LB';
+update ca_bezcarek set country='GX' where country ='INT';
+
+------------------------------------------------------------------------------
+
+select distinct name
+from attack_type;
+
+select distinct attack
+from ca_bezcarek
+order by attack asc;
+
+update ca_bezcarek set attack='Account hijacking' where attack='Account Hjiacking';
+update ca_bezcarek set attack='Account hijacking' where attack='Account Hijacking';
+update ca_bezcarek set attack='Undisclosed vulnerability' where attack='Undisclosed Vulnerabilities';
+update ca_bezcarek set attack='Undisclosed vulnerability' where attack='Undisclosed Vulnerability';
+update ca_bezcarek set attack='Account hijacking' where attack='Password-Spaying';
+update ca_bezcarek set attack='Password spraying' where attack='Password-Spraying';
+update ca_bezcarek set attack='Password spraying' where attack='Password-spray';
+update ca_bezcarek set attack='Password spraying' where attack='Password-spraying';
+update ca_bezcarek set attack='Vulnerable Magento extensions' where attack='Vulnerable Magento Extensions';
+
+----------------------------------
+select *
+from ca_bezcarek;
+
+//create table ATTACK_CL AS
+//select distinct c.id AS ID,c.date AS DATE,ct.id AS C_TARGETID,c.description AS DESCRIPTION,atc.id AS C_ATTACK_CLASSID 
+//from ca_bezcarek as c
+//left join c_target as ct on ct.name = c.target
+//left join c_attack_class as atc on atc.code = c.attack_class
+//order by ID asc;
+
+select *
+from ca_bezcarek
+where country like 'UA AU';
+
+select *
+from C_TARGET_TYPE;
+
+select * from ATTACK_TYPE;
+
+create or replace Table C_TARGET_TYPE
+(
+ID int, // pismena nyni---nahradime cisly
+NAME varchar(400),
+NAME_CZ varchar(400)
+);
+
+create or replace Table ATTACK_TYPE
+(
+ID int, // pismena nyni---nahradime cisly
+NAME varchar(400),
+C_ATTACK_CATEGORYID int,
+G_ACTIONID int
+);
+
+create or replace table C_ATTACK_CLASS
+(
+ID int,// zkratka CC
+CODE char(2),
+NAME varchar(100), // nazev Cyber Crime
+DESCRIPTION_CZ varchar(255)
+);
+select * from C_ATTACK_CLASS;
+
+create or replace table C_ATTACK_CATEGORY
+(
+ID int,
+NAME varchar(100)
+);
+select * from C_ATTACK_CLASS;
+--------------------------------------
+create or replace table ATTACK_MAIN as
+select CA.ID, CA.DATE, CT.ID AS C_TARGETID, DESCRIPTION,ATY.ID AS ATTACK_TYPEID,CTT.ID AS C_TARGET_TYPEID,CTA.ID AS C_ATTACK_CLASSID
+//G_COUNTRYID,G_KEYWORDS
+FROM CA_BEZCAREK AS CA 
+LEFT JOIN C_TARGET AS CT         
+ON CA.TARGET = CT.NAME
+LEFT JOIN ATTACK_TYPE AS ATY
+ON CA.ATTACK = ATY.NAME
+LEFT JOIN C_TARGET_TYPE AS CTT
+ON CA.TARGET_CLASS = CTT.NAME
+LEFT JOIN C_ATTACK_CLASS AS CTA
+ON CA.ATTACK_CLASS = CTA.CODE;
+
+select * from ATTACK_MAIN
+order by ID;
+
+select * from C_ATTACK_CATEGORY;
+----------------------------------
+create or replace temporary table ATTACK_TYPE_C_CATEGORY AS
+select ATY.ID, ATY.NAME,CAC.NAME AS C_NAME
+FROM ATTACK_TYPE AS ATY
+LEFT JOIN C_ATTACK_CATEGORY AS CAC
+ON ATY.C_ATTACK_CATEGORYID = CAC.ID;
+
+select * 
+from ATTACK_TYPE;
+
+select * from attack_type_c_Category;
+
+create or replace table CA_preliminary_visual as
+select AM.ID, AM.DATE, CT.NAME AS TARGET_NAME, CTT.NAME_CZ AS TARGET_TYPE_NAME_CZ, CAC.NAME AS AC_NAME, CAC.DESCRIPTION_CZ AS ATTACK_CLASS_DESC, ATCC.NAME AS ATTACK_TYPE_NAME, ATCC.C_NAME AS C_ATTACK_CATEGORY_NAME
+from ATTACK_MAIN AS AM
+left join C_TARGET AS CT
+on AM.C_TARGETID = CT.ID
+left join C_TARGET_TYPE AS CTT
+on AM.C_TARGET_TYPEID = CTT.ID
+left join C_ATTACK_CLASS AS CAC
+on AM.C_ATTACK_CLASSID = CAC.ID
+left join ATTACK_TYPE_C_CATEGORY AS ATCC
+on AM.ID = ATCC.ID;
+
+select * 
+from CA_preliminary_visual
+where C_ATTACK_CATEGORY_NAME like 'social'
+order by ID;
+
+select *
+from attack_type;
+
+select distinct attack_typeid
+from attack_main;
+-----------------------------------
+drop table attack_main;
+
+select *
+from ca_bezcarek;
+
+create temporary table attack_test as
+select c.id, c.date,c.target,c.description,atp.C_ATTACK_CATEGORYID,c.target_class, c.attack_class,c.country
+from ca_bezcarek as C
+left join attack_type as ATP
+on C.ATTACK = ATP.NAME;
+
+create table ATTACK_HW AS
+select distinct id, date, target, description, c_attack_categoryid, target_class, attack_class, country
+from attack_test;
+
+select distinct id,*
+from attack_test
+where c_attack_categoryid = 1
+order by date desc;
+
+select *
+from attack_HW
+order by id asc;
+
+select *
+from C_ATTACK_CLASS;
+
+create or replace table ATTACK_HW AS
+select ah.id, ah.date, ah.target, ah.description, ah.c_attack_categoryid, ah.target_class, ah.country,ah.attack_class, atc.id as c_attack_classid
+from attack_hw as ah
+left join c_attack_class as atc
+on ah.attack_class = atc.code;
+
+select *
+from c_target_type;
+
+select *
+from c_target;
+
+create or replace table ATTACK_HW AS
+select ah.id, ah.date, ah.target, ah.description, ah.c_attack_categoryid, ah.target_class, ctt.id as c_target_typeid, ah.country,ah.attack_class, ah.c_attack_classid
+from attack_hw as ah
+left join c_target_type as ctt
+on ah.target_class = ctt.name;
+
+select *
+from attack_hw
+where target = '?';
+
+select distinct target
+from attack_hw;
+
+select *
+from c_target;
+
+update attack_hw set target  = 'Unknown' where target is null;
+update attack_hw set target  = 'Unknown' where target = '?';
+
+create or replace temporary table a_target_work as
+select ah.id, ah.date, ah.target, ct.id as c_targetid
+from attack_hw as ah
+left join c_target as ct
+on ah.target = ct.name
+where ct.id is null
+order by target asc;
+
+select distinct target
+from a_target_work;
+
+update attack_hw set Target ='Multiple' where target ='>1';---hotovo
+update attack_hw set Target ='YouTube users' where target ='YouTube Users';
+update attack_hw set Target ='YouTube users' where target ='YouTuber users';
+update attack_hw set Target ='YouTube users' where target ='Youtube Users';
+update attack_hw set Target ='WordPress Sites' where target ='Wordpress Sites';
+update attack_hw set Target ='WordPress Sites' where target ='Wordpress sites';
+
+select distinct target
+from attack_hw;
+
+
+
+create or replace table c_target as
+select row_number() over (order by target) as id, target as name
+from attack_hw;
+
+select distinct  id, date, target, description, c_attack_categoryid, target_class, c_target_typeid, country, attack_class, c_attack_classid
+from attack_hw;
+//
+//drop table attack_hw;
+
+create or replace table attack_hw
+(
+ID int,
+date DATE,
+target varchar(400),
+description varchar(800), 
+c_attack_categoryid int,
+target_class varchar(100),
+c_target_typeid int,
+country char(25),
+attack_class char(2),
+c_attack_classid int
+);
+
+select *
+from attack_hw;
+
+create temporary table HELP as
+select distinct target
+from attack_hw
+order by target asc;
+
+create or replace table c_target as
+select row_number() over (order by target) as id, target as name
+from HELP;
+
+select *
+from c_target;
+
+create or replace table ATTACK_HW AS
+select ah.id, ah.date, ah.target, ct.id as c_targetid, ah.description, ah.c_attack_categoryid, ah.target_class, ah.c_target_typeid, ah.country,ah.attack_class, ah.c_attack_classid
+from attack_hw as ah
+left join c_target as ct
+on ah.target = ct.name;
+
+select *
+from attack_hw;
+----------------------------------------------------------------------
+select *
+from ca_bezcarek;
+
+create
+select ahw.id, ahw.date, ahw.target, ahw.description, cab.attack, ahw.target_class, ahw.attack_class, ahw.C_ATTACK_CLASSID 
+from ca_bezcarek as cab
+full outer join attack_hw as ahw
+on cab.id = ahw.id;
+
+create
+select ahw.id, ahw.date, ahw.target, ahw.description, cab.attack, ahw.target_class, ahw.attack_class, ahw.C_ATTACK_CLASSID 
+from ca_bezcarek as cab
+full outer join attack_hw as ahw
+on cab.id = ahw.id;
+-----------------------------------------------------------
+create or replace table c_country
+(
+ID int,
+COUNTRYID_GROUP int,
+CODE char(30),
+NAME varchar(100), 
+NAME_CZ varchar(100)
+);
+
+select * from c_country;
+create or replace table ATTACK_HW AS
+select ahw.id, ahw.date, ahw.target, ahw.description, ahw.target_class, ahw.attack_class, ahw.C_ATTACK_CLASSID,cc.COUNTRYID_GROUP,cc.code,cc.name,cc.name_cz 
+from attack_hw as ahw
+full outer join c_country as cc
+on ahw.COUNTRY = cc.CODE
+where ahw.id is not null;
+
+create or replace table ATTACK_HW AS
+select ahw.id, ahw.date, ct.id AS C_TARGETID, ahw.target, ahw.description, ahw.target_class, ahw.attack_class, ahw.C_ATTACK_CLASSID,ahw.COUNTRYID_GROUP,ahw.code,ahw.name,ahw.name_cz 
+from attack_hw as ahw
+full outer join c_target as ct
+on ahw.target = ct.name;
+--------------------------------------------
+select *
+from c_target_type;
+
+create or replace table ATTACK_HW AS
+select ahw.id, ahw.date, ahw.C_TARGETID, ahw.target, ahw.description, ctt.id as C_TARGET_TYPEID, ahw.target_class, ahw.attack_class, ahw.C_ATTACK_CLASSID,ahw.COUNTRYID_GROUP,ahw.code,ahw.name,ahw.name_cz 
+from attack_hw as ahw
+full outer join c_target_type as ctt
+on ahw.target_class = ctt.name;
+
+
+select *
+from attack_type;
+
+------------------------------------------------
+select *
+from attack_hw;
+
+select *
+from attack_type;
+----------------------------------------------
+CREATE OR REPLACE TABLE C_ACTION
+(
+ID int,
+Name varchar(250),
+Description varchar(1000),
+Prevention boolean,
+Reaction boolean
+);
+
+select *
+from c_action;
+
+select *
+from c_attack_class;
+---------------
+create or replace Table ATTACK_TYPE
+(
+ID int, // pismena nyni---nahradime cisly
+NAME varchar(400),
+C_ATTACK_CATEGORYID int,
+G_ACTIONID1 int,
+G_ACTIONID2 int,
+G_ACTIONID3 int,
+G_ACTIONID4 int,
+G_ACTIONID5 int
+);
+
+select * 
+from c_target_type;
+-------------
+select *
+from ca_bezcarek;
+
+create temporary table attack_help as
+select cb.ID as MAIN_ID, at.*
+from ca_bezcarek as cb
+left join attack_type as at
+on cb.attack = at.name;
+-------------------
+select *
+from attack_help;
+
+create table attack_main AS
+select ah.ID, ah.date, ah.C_TARGETID, AH.DESCRIPTION, ap.ID as attack_typeid,ah.C_TARGET_TYPEID, ah.COUNTRYID_GROUP,ah.C_ATTACK_CLASSID
+from attack_hw as ah
+left join attack_help as ap
+on ah.id = ap.MAIN_ID;
+
+select *
+from attack_main;
+-------------------
+create table FINAL_ATTACK as
+select am.id as ID, am.date as DATE, am.c_targetid as c_targetid, 
+ct.NAME as C_TARGETNAME, am.C_ATTACK_CLASSID as C_ATTACK_CLASSID,
+cac.name as C_ATTACK_CLASSNAME, cac.description_cz as C_ATTACK_CLASSDESCRIPTTION_CZ, 
+am.ATTACK_TYPEID, aty.name as ATTACK_TYPENAME, aty.c_attack_categoryid as ATTACK_categoryID, cacat.name as ATTACK_TYPECATEGORYNAME,
+aty.g_actionid1 as action1, ca1.name as a1_name, ca1.description as a1_description, ca1.prevention as a1_prevent, ca1.reaction as a1_react, 
+aty.g_actionid2 as action2,ca2.name as a2_name, ca2.description as a2_description, ca2.prevention as a2_prevent, ca2.reaction as a2_react, 
+aty.g_actionid3 as action3, ca3.name as a3_name, ca3.description as a3_description, ca3.prevention as a3_prevent, ca3.reaction as a3_react,
+aty.g_actionid4 as action4, ca4.name as a4_name, ca4.description as a4_description, ca4.prevention as a4_prevent, ca4.reaction as a4_react,
+aty.g_actionid5 as action5, ca5.name as a5_name, ca5.description as a5_description, ca5.prevention as a5_prevent, ca5.reaction as a5_react,
+am.c_target_typeid, ctt.name as attack_class, ctt.name_CZ as attack_class_cz,
+am.countryid_group, cco.code as country_code, cco.name as country, cco.name_cz as country_cz
+from attack_main as am
+left join c_target as ct
+on am.c_targetid = ct.id
+left join c_attack_class as cac
+on am.c_attack_classid = cac.id
+left join attack_type as aty
+on am.attack_typeid = aty.id
+left join c_attack_category as cacat
+on aty.c_attack_categoryid = cacat.id
+left join c_action as ca1
+on aty.g_actionid1 = ca1.id
+left join c_action as ca2
+on aty.g_actionid2 = ca2.id
+left join c_action as ca3
+on aty.g_actionid3 = ca3.id
+left join c_action as ca4
+on aty.g_actionid4 = ca4.id
+left join c_action as ca5
+on aty.g_actionid5 = ca5.id
+left join c_target_type as ctt
+on am.c_target_typeid = ctt.id
+left join c_country as cco
+on am.countryid_group = cco.countryid_group;
+
+select *
+from FINAL_ATTACK
+order by date desc;
+
+select distinct id
+from final_attack;
+
