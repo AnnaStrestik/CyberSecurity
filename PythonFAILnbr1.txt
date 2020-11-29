@@ -1,0 +1,32 @@
+# # import pandas as pd
+# # cyber = pd.read_csv ("CA_dirty.csv",encoding='utf-8')
+
+
+# import pandas as pd
+
+# cyber = pd.read_csv("CA_dirty.csv", encoding="utf8")
+# cyber["Description"] = cyber["Description"].str.replace(",", "-")
+
+# # print (df.head())
+
+# # Target_Class = pd.DataFrame(cyber,columns=["Target_Class"],dtype=str)
+# # print (Target_Class)
+
+# Description = [pd.DataFrame(cyber,columns=["Description"],dtype=str)]
+# # print (Description)
+# # Description_list = [Description.columns.values.tolist()] +Description.tolist()
+# # print (Description_list)
+
+# df = pd.DataFrame(cyber, columns= ["Description"])
+# Description_list = df["Description"].values.tolist()
+# Description_list.append ('Printer')
+
+# HELP = [str(Description_list)]
+
+# desc_clear = [carka.replace(",","-") for carka in HELP]
+# import pprint
+# pprint.pprint (desc_clear)
+
+
+
+# # print(Description_list)
