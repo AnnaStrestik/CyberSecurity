@@ -1,175 +1,185 @@
-﻿https://dbdiagram.io/d/5f83350b3a78976d7b772fea 
-// výsledná tabulka - přehled o útocích
+﻿Datovy model - vstupni vrstva, denormalizovana data:
+https://dbdiagram.io/d/5f8f24ad3a78976d7b787269
+
+Table CA_FULL {
+  ID int [pk]
+  DATE date
+  AUTHOR int
+  TARGET varchar(250)
+  DESCRIPTION varchar(1000)
+  ATTACK varchar(400)
+  TARGET_CLASS varchar(400)
+  ATTACK_CLASS varchar(400)
+  COUNTRY varchar(250)
+}
+
+/////target = cil utoku
+//attack - typ utoku, napr malware, hijacking apod.
+//target_class - napr. individual, education, finance, manufacturing
+//attack_class - CC, CE, H - klasifikace jako hacktivism, cyber crime, cyber espionage
+//country - muze byt zavadejici - kvuli VPN
+
+Datovy model - normalizovana data, 1:1
+
+https://dbdiagram.io/d/5f8aac403a78976d7b78013f
+
+/ výsledná tabulka - přehled o útocích
 Table ATTACK_MAIN {
   ID int [pk]
   DATE date
-  TARGETID int
-  CATEGORY_GROUPID int
-  SUBCATEGORYID int
-  TARGET_SECTORID str
-  COUNTRY_GROUPID str
-  ATTACK_CLASSID str // potreba sjednotit hodnoty a zkratky
-  KEYWORDS_GROUPID int
+  C_TARGETID int
+  DESCRIPTION varchar(255)
+  ATTACK_TYPEID int
+  C_TARGET_TYPEID int
+  G_COUNTRYID int
+  C_ATTACK_CLASSID int // potreba sjednotit hodnoty a zkratky
+  G_KEYWORDS int
 }
  
  // OK - nemenit
  // cil utoku napr. nazev firmy
- Table TARGET {
+ Table C_TARGET {
    ID int [pk]
-   NAME varchar
+   NAME varchar(100)
  }
  
  // OK - nemenit (SQL )
  // puvodne target class (x individual, ...)
- Table TARGET_SECTOR {
-   ID str [pk] // pismena nyni
-   NAME varchar
- }
- 
- // OK
- // kombinace kategorii - bridge
- Table CATEGORY_GROUP {
-   ID int [pk]
-   ATTACK_CATEGORYID int
-   ATTACK_MAINID int
- }
- 
- // OK - vlastni tvorba
- // social / technical / unknown
- Table ATTACK_CATEGORY {
-  ID int [pk] // zatim cisla
-  NAME varchar
+ Table C_TARGET_TYPE {
+   ID int [pk] // pismena nyni---nahradime cisly
+   NAME varchar(100)
+   NAME_CZ varchar(100)
  }
 
+ // OK - vlastni tvorba
+ // social / technical / unknown
+ Table C_ATTACK_CATEGORY {
+  ID int [pk] // zatim cisla
+  NAME varchar(100)
+ }
 
 // OK - nemenit
 // puvodne atribut attack (malware, hijack...)
-Table ATTACK_SUBCATEGORY {
+Table ATTACK_TYPE {
   ID int [pk]
-  NAME str
-  CATEGORYID int
+  NAME varchar(100)
+  C_ATTACK_CATEGORYID int
+  G_ACTIONID int
 }
-
 
 // VYCICSTIT (N/A, GB-UK, UAE-SA)
 // zeme
-Table COUNTRY {
-  ID str [pk] // ISO 3166-1 alpha-2 
-  NAME str
+Table C_COUNTRY {
+  ID int [pk] // ISO 3166-1 alpha-2 
+  CODE char(2)
+  NAME varchar(100)
+  NAME_CZ varchar(100)
 }
-
 
 // OK
 // skupiny zemi
-Table COUNTRY_GROUP {
-  ID str [pk]
-  COUNTRYID str
+Table G_COUNTRY {
+  ID int [pk]
+  C_COUNTRYID int
   ATTACK_MAINID int
 }
-
 
 // SJEDNOTIT zkratky a nazvy, doplnit desc v ČJ
 // stejny atribut puvodne
-Table ATTACK_CLASS {
-  ID str [pk] // zkratka CC
-  NAME str // nazev Cyber Crime
-  DESCRIPTION str // v ČJ
+Table C_ATTACK_CLASS {
+  ID int [pk] // zkratka CC
+  CODE char(2)
+  NAME varchar(100) // nazev Cyber Crime
+  DESCRIPTION_CZ varchar(255) // v ČJ
 } 
-
 
 // OK
 // skupina klicovych slov (z description)
-Table  KEYWORDS_GROUP {
+// M.
+Table  G_KEYWORDS {
   ID int [pk]
   ATTACK_MAINID int
-  KEYWORDID int
+  C_KEYWORDID int
 }
-
 
 // UKOL - VYPIS HODNOT A JEJICH CETNOST - Python / Geneea?
 // klicova slova (z description)
-Table KEYWORDS {
+Table C_KEYWORDS {
   ID int [pk]
-  NAME str
-  DESCRIPTION str
-}
-
-
-// PLAN 1
-Table PREVENTION_GROUP {
-  ID int [pk]
-  ATTACK_MAINID int
-  PREVENTIONID int
-}
-
-
-// PLAN 1
-Table PREVENTION {
-  ID int [pk]
-  NAME str
-  DESCRIPTION str
+  NAME varchar(100)
+  NAME_CZ varchar(100)
 }
 
 
 // PLAN 2
-Table ACTION_GROUP {
+Table G_ACTION {
   ID int [pk]
-  ATTACK_MAINID int
-  ACTIONID int
+  ATTACK_TYPEID int
+  C_ACTIONID int
 }
-
 
 // PLAN 2
-Table ACTION {
+Table C_ACTION {
   ID int [pk]
-  NAME str
-  DESCRIPTION str
+  NAME varchar(100)
+  DESCRIPTION_CZ varchar(255)
+  PREVENTION boolean
+  REACTION boolean
 }
-
-
 
 
 // PLAN 3
 // propojeni data breaches
 
 
-Ref: "CATEGORY_GROUP"."ATTACK_MAINID" < "ATTACK_MAIN"."ID"
+Ref: "C_TARGET"."ID" < "ATTACK_MAIN"."C_TARGETID"
 
+Ref: "C_ATTACK_CATEGORY"."ID" < "ATTACK_TYPE"."C_ATTACK_CATEGORYID"
 
-Ref: "TARGET"."ID" < "ATTACK_MAIN"."TARGETID"
+Ref: "C_TARGET_TYPE"."ID" < "ATTACK_MAIN"."C_TARGET_TYPEID"
 
+Ref: "ATTACK_TYPE"."ID" < "ATTACK_MAIN"."ATTACK_TYPEID"
 
-Ref: "ATTACK_CATEGORY"."ID" < "ATTACK_SUBCATEGORY"."CATEGORYID"
+Ref: "C_COUNTRY"."ID" < "G_COUNTRY"."C_COUNTRYID"
 
+Ref: "ATTACK_MAIN"."ID" < "G_COUNTRY"."ATTACK_MAINID"
 
-Ref: "TARGET_SECTOR"."ID" < "ATTACK_MAIN"."TARGET_SECTORID"
+Ref: "G_COUNTRY"."ID" < "ATTACK_MAIN"."G_COUNTRYID"
 
+Ref: "C_ATTACK_CLASS"."ID" < "ATTACK_MAIN"."C_ATTACK_CLASSID"
 
-Ref: "ATTACK_SUBCATEGORY"."ID" < "ATTACK_MAIN"."SUBCATEGORYID"
+Ref: "G_KEYWORDS"."ATTACK_MAINID" < "ATTACK_MAIN"."ID"
 
+Ref: "C_KEYWORDS"."ID" < "G_KEYWORDS"."C_KEYWORDID"
 
-Ref: "ATTACK_CATEGORY"."ID" < "CATEGORY_GROUP"."ATTACK_CATEGORYID"
+// Ref: "PREVENTION"."ID" < "PREVENTION_GROUP"."PREVENTIONID"
 
+Ref: "C_ACTION"."ID" < "G_ACTION"."C_ACTIONID"
 
-Ref: "COUNTRY"."ID" < "COUNTRY_GROUP"."COUNTRYID"
+Ref: "ATTACK_TYPE"."G_ACTIONID" < "G_ACTION"."ID"
 
+Datovy model - vystupni vrstva, normalizovana data o Cyber Attacks pro analyzu
+https://dbdiagram.io/d/5f8f25f03a78976d7b787276
 
-Ref: "ATTACK_MAIN"."ID" < "COUNTRY_GROUP"."ATTACK_MAINID"
-
-
-Ref: "COUNTRY_GROUP"."ID" < "ATTACK_MAIN"."COUNTRY_GROUPID"
-
-
-Ref: "ATTACK_CLASS"."ID" < "ATTACK_MAIN"."ATTACK_CLASSID"
-
-
-Ref: "KEYWORDS_GROUP"."ATTACK_MAINID" < "ATTACK_MAIN"."ID"
-
-
-Ref: "KEYWORDS"."ID" < "KEYWORDS_GROUP"."KEYWORDID"
-
-
-Ref: "PREVENTION"."ID" < "PREVENTION_GROUP"."PREVENTIONID"
-
-
-Ref: "ACTION"."ID" < "ACTION_GROUP"."ACTIONID"
+Table CA {
+  ID int [pk]
+  DATE date
+  C_TARGETID int
+  C_TARGETNAME varchar(250)
+  C_ATTACK_CLASSID int
+  C_ATTACK_CLASSNAME varchar(100)
+  ATTACK_TYPEID int
+  ATTACK_TYPENAME varchar (400)
+  ATTACK_TYPENAME_CZ varchar (400)
+  ATTACK_TYPECATEGORY int
+  ATTACK_TYPECATEGORYNAME varchar(100)
+  ATTACK_TYPEG_ACTIONID int
+  DESCRIPTOIN varchar(255)
+  G_ACTIONID int
+  C_ACTIONNAME varchar(100)
+  C_ACTIONDESCRIPTION_CZ varchar(255)
+  C_ACTIONPREVENTION boolean
+  C_ACTIONREACTION boolean
+  C_TARGET_TYPEID int
+  G_COUNTRYID int
+  G_KEYWORDS int
